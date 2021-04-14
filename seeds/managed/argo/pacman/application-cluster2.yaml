@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pacman-aws
+  namespace: openshift-operators
+spec:
+  destination:
+    name: jnp4537-aws
+    namespace: pacman
+    server: ''
+  source:
+    path: pacman
+    repoURL: 'https://github.com/open-cluster-management/application-samples.git'
+    targetRevision: HEAD
+  project: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
