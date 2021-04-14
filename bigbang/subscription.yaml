@@ -1,0 +1,19 @@
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  annotations:
+    apps.open-cluster-management.io/git-branch: main
+    apps.open-cluster-management.io/git-path: seeds
+    apps.open-cluster-management.io/reconcile-option: merge
+  labels:
+    app: big-bang
+  name: plumbing
+  namespace: big-bang
+spec:
+  channel: big-bang/gitops-fleet-samples
+  placement:
+    placementRef:
+      kind: PlacementRule
+      name: plumbing-placement
+

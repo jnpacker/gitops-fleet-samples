@@ -1,0 +1,9 @@
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: gitops-fleet-samples
+  namespace: big-bang
+spec:
+  pathname: https://github.com/jnpacker/gitops-fleet-samples.git
+  type: Git
