@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: pacman-aws
-  namespace: openshift-operators
+  namespace: argocd
 spec:
   destination:
     name: jnp4537-aws
