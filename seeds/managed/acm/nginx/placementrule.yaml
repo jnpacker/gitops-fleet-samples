@@ -1,0 +1,23 @@
+
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: nginx-production
+  namespace: nginx
+  labels:
+    app: nginx-sample
+spec:
+  clusterConditions:
+    - type: ManagedClusterConditionAvailable
+      status: "True"
+  #clusterReplicas: 2
+  clusterSelector:
+    matchExpressions:
+    - key: usage
+      operator: In
+      values:
+      - development
+      - production
+    #matchLabels:
+    #  usage:

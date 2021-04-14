@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pacman-gcp
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: book-import
+    server: ''
+  source:
+    path: book-import
+    repoURL: 'https://github.com/open-cluster-management/application-samples.git'
+    targetRevision: HEAD
+  project: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true

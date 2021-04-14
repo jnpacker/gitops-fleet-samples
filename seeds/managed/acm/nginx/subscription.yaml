@@ -1,0 +1,18 @@
+
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: nginx-production-subscription
+  namespace: nginx
+  labels:
+    app: nginx-sample
+  annotations:
+    apps.open-cluster-management.io/github-path: nginx
+    apps.open-cluster-management.io/github-branch: production
+spec:
+  channel: application-samples/gitops
+  placement:
+    placementRef:
+      name: nginx-production
+      kind: PlacementRule
