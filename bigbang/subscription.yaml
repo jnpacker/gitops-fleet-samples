@@ -13,7 +13,8 @@ metadata:
 spec:
   channel: big-bang/gitops-fleet-samples
   placement:
-    placementRef:
-      kind: PlacementRule
-      name: plumbing-placement
+    local: true
+    #placementRef:
+    #  kind: PlacementRule
+    #  name: plumbing-placement
 

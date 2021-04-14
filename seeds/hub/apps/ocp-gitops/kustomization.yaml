@@ -6,3 +6,4 @@ namespace: openshift-operators
 resources:
 - namespace.yaml
 - subscription.yaml
+- argocd.yaml
