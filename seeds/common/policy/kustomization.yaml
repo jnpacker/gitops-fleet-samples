@@ -5,5 +5,5 @@ namespace: policy
 
 resources:
 - namespace.yaml
-- etc-encryption.yaml
+- etcd-encryption.yaml
 - placement.yaml
