@@ -1,0 +1,11 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  annotations:
+    include.release.openshift.io/self-managed-high-availability: "true"
+    olm.providedAPIs: AppProject.v1alpha1.argoproj.io,Application.v1alpha1.argoproj.io,ArgoCD.v1alpha1.argoproj.io,GitopsService.v1alpha1.pipelines.openshift.io,TektonAddon.v1alpha1.operator.tekton.dev,TektonConfig.v1alpha1.operator.tekton.dev,TektonPipeline.v1alpha1.operator.tekton.dev,TektonTrigger.v1alpha1.operator.tekton.dev
+  name: global-operators
+  namespace: openshift-operators
+spec:
+  targetNamespaces:
+    - openshift-operators
