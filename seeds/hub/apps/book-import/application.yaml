@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: book-import
+  name: book-import-hub
   namespace: argocd
 spec:
   destination:

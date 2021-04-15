@@ -1,0 +1,17 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: helloworld-app-subscription
+  namespace: helloworld
+  labels:
+    app: helloworld-app
+  annotations:
+    apps.open-cluster-management.io/github-path: helloworld
+    apps.open-cluster-management.io/github-branch: main
+spec:
+  channel: application-samples/gitops
+  placement:
+    placementRef:
+      name: helloworld-app-placement
+      kind: PlacementRule
+      group: apps.open-cluster-management.io
