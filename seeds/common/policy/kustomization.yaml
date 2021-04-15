@@ -7,5 +7,5 @@ resources:
 - namespace.yaml
 - etcd-encryption.yaml
 - imagemanifestvulnerability.yaml
-- compliance-operator.yaml
+- complianceoperator.yaml
 - placement.yaml
