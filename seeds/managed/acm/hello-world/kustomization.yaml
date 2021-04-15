@@ -1,5 +1,6 @@
 resources:
 - namespace.yaml
-- channel.yaml
 - subscription.yaml
+- placement.yaml
 - application.yaml
+
