@@ -6,4 +6,5 @@ namespace: policy
 resources:
 - namespace.yaml
 - etcd-encryption.yaml
+- imagemanifestvulnerability.yaml
 - placement.yaml
