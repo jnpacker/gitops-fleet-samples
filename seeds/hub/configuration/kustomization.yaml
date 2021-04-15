@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: hub-config
 
 resources:
-- namespace
+- namespace.yaml
 - applicationsets.yaml
 - placement.yaml
