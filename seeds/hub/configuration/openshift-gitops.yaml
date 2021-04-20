@@ -818,6 +818,6 @@ placementRef:
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: applicationsets-installed
+  - name: openshift-gitops-installed
     kind: Policy
     apiGroup: policy.open-cluster-management.io
