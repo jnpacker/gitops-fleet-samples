@@ -2,11 +2,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: book-import-hub
-  namespace: argocd
+  namespace: openshift-gitops
 spec:
   destination:
     name: in-cluster
-    namespace: argocd
+    namespace: book-import
     server: ''
   source:
     path: book-import

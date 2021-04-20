@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: nginx-sample
-  namespace: argocd
+  namespace: openshift-gitops
 spec:
   generators:
   - clusters: {} # This is a generator, specifically, a cluster generator.
