@@ -6,7 +6,7 @@ metadata:
 spec:
   destination:
     name: in-cluster
-    namespace: book-import
+    namespace: openshift-gitops
     server: ''
   source:
     path: book-import

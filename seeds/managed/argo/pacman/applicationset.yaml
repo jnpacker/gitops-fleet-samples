@@ -16,7 +16,7 @@ spec:
     spec:
       project: "default"
       source:
-        repoURL: https://github.com/jnpacker/application-samples/
+        repoURL: https://github.com/jnpacker/application-samples.git
         targetRevision: main
         path: pacman
       destination:
