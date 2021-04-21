@@ -1,0 +1,15 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: remote-argo-app
+  namespace: hub-config
+  labels:
+    app: remote-argo-app
+spec:
+  clusterSelector:
+    matchExpressions:
+      - key: usage
+        operator: In
+        values:
+          - development
+          - production
