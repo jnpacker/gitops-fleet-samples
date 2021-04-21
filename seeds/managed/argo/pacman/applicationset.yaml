@@ -12,7 +12,6 @@ spec:
           operator: In
           values:
             - development
-            - production
   template: 
     # This is a template Argo CD Application, but with support for parameter substitution.
     metadata:
