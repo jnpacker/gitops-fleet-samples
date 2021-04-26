@@ -9,8 +9,8 @@ spec:
   #clusterReplicas: 1
   clusterSelector:
     matchExpression:
-    - key: usage
-      operator: In
-      values:
-        - development
-        - production
+      - key: usage
+        operator: In
+        values:
+          - development
+          - production
