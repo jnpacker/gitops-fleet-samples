@@ -8,7 +8,7 @@ metadata:
 spec:
   #clusterReplicas: 1
   clusterSelector:
-    matchExpression:
+    matchExpressions:
       - key: usage
         operator: In
         values:
