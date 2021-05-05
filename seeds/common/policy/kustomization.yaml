@@ -6,6 +6,7 @@ namespace: policy
 resources:
 - namespace.yaml
 - etcd-encryption.yaml
+- openshift-gitops.yaml
 #- imagemanifestvulnerability.yaml
 - complianceoperator.yaml
 - placement.yaml
