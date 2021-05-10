@@ -1,0 +1,25 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hibernation-cronjob
+  namespace: open-cluster-management
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - command:
+            - ./action
+            env:
+            - name: TAKE_ACTION
+              value: Hibernating
+            - name: OPT_IN
+              value: "false"
+            image: quay.io/jpacker/hibernation-curator:0.2dev
+            imagePullPolicy: IfNotPresent
+            name: worker
+          restartPolicy: OnFailure
+          serviceAccountName: hibernator
+  schedule: 0 22 * * 0-6
+  suspend: false
