@@ -73,7 +73,7 @@ metadata:
   name: binding-complianceoperator
   namespace: policy
 placementRef:
-  name: all-openshift
+  name: all-openshift-no-snc
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:

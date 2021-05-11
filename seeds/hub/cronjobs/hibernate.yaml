@@ -16,7 +16,7 @@ spec:
               value: Hibernating
             - name: OPT_IN
               value: "false"
-            image: quay.io/jpacker/hibernation-curator:0.2dev
+            image: quay.io/jpacker/hibernation-curator:0.4
             imagePullPolicy: IfNotPresent
             name: worker
           restartPolicy: OnFailure

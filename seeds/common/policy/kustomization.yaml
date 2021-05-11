@@ -10,3 +10,4 @@ resources:
 #- imagemanifestvulnerability.yaml
 - complianceoperator.yaml
 - placement.yaml
+- placement-no-snc.yaml
