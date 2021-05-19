@@ -8,6 +8,6 @@ resources:
 - etcd-encryption.yaml
 - openshift-gitops.yaml
 #- imagemanifestvulnerability.yaml
-- complianceoperator.yaml
+#- complianceoperator.yaml
 - placement.yaml
 - placement-no-snc.yaml
