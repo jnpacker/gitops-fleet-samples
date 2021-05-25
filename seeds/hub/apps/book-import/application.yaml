@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: book-import-hub
+  name: cloud-provider-quota-check
   namespace: openshift-gitops
 spec:
   destination:
     name: in-cluster
-    namespace: openshift-gitops
+    namespace: open-cluster-management
     server: ''
   source:
-    path: book-import
-    repoURL: 'https://github.com/open-cluster-management/application-samples.git'
+    path: deploy
+    repoURL: 'https://github.com/open-cluster-management/cloud-provider-quota-check.git'
     targetRevision: HEAD
   project: default
   syncPolicy:
     automated:
-      prune: false
-      selfHeal: false
+      prune: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true
