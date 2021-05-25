@@ -1,0 +1,1 @@
+oc patch clusterrolebinding open-cluster-management:subscription-admin --patch-file ./crb-patch.yaml
