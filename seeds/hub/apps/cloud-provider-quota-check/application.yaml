@@ -10,8 +10,8 @@ spec:
     server: ''
   source:
     path: deploy
-    repoURL: 'https://github.com/open-cluster-management/cloud-provider-quota-check.git'
-    targetRevision: HEAD
+    repoURL: 'https://github.com/jnpacker/cloud-provider-quota-check.git'
+    targetRevision: argocd-deploy
   project: default
   syncPolicy:
     automated:
