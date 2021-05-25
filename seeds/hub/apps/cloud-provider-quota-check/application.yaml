@@ -6,7 +6,7 @@ metadata:
 spec:
   destination:
     name: in-cluster
-    namespace: open-cluster-management
+    namespace: openshift-gitops
     server: ''
   source:
     path: deploy
