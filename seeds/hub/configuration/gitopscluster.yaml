@@ -1,0 +1,49 @@
+# This is for the local ARGO on the Hub
+---
+apiVersion: apps.open-cluster-management.io/v1alpha1
+kind: GitOpsCluster
+metadata:
+  name: argo-acm-clusters-1
+  namespace: openshift-gitops
+spec:
+  argoServer:
+    cluster: local-cluster
+    argoNamespace: openshift-gitops
+  placementRef:
+    kind: Placement
+    apiVersion: cluster.open-cluster-management.io/v1alpha1
+    name: local-cluster
+    namespace: openshift-gitops
+
+# This is the ManagedClusterSetBinding to the openshift-gitops namespace
+---
+apiVersion: cluster.open-cluster-management.io/v1alpha1
+kind: ManagedClusterSetBinding
+metadata:
+  name: all-clusters
+  namespace: openshift-gitops
+spec:
+  clusterSet: all-clusters
+
+#This is the placement resource for targeting Managed Clusters for
+---
+apiVersion: cluster.open-cluster-management.io/v1alpha1
+kind: Placement
+metadata:
+  name: local-cluster
+  namespace: openshift-gitops
+spec:
+  #numberOfClusters: 6
+  clusterSets:
+  - all-clusters
+  predicates:
+  - requiredClusterSelector:
+      labelSelector:
+        #matchLabels:
+        #  vendor: OpenShift
+        matchExpressions:
+        - key: usage
+          operator: "In"
+          values:
+          - production
+          - development
