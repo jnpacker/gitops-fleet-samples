@@ -5,10 +5,10 @@ metadata:
   namespace: openshift-gitops
 spec:
   generators:
-  - clusters: # This is a generator, specifically, a cluster generator.
-      selector:
-        matchLabels:
-          usage: development
+    - clusterListResource:
+        configMapRef: acm-placementrule
+        name: pacman-placement
+        requeueAfterSeconds: 30
   template: 
     # This is a template Argo CD Application, but with support for parameter substitution.
     metadata:
@@ -28,3 +28,17 @@ spec:
           selfHeal: false
         syncOptions:
           - CreateNamespace=true
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: pacman-placement
+  namespace: openshift-gitops
+spec:
+  clusterReplicas: 1   # Availability choice, maximum number of clusters to provision at once
+  clusterSelector:
+    matchLabels:
+      'usage': 'production'
+  clusterConditions:
+    - type: ManagedClusterConditionAvailable
+      status: "True"
