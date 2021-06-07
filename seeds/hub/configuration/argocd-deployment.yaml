@@ -32,7 +32,7 @@ spec:
             - '--argocd-repo-server'
             - >-
               openshift-gitops-repo-server.openshift-gitops.svc.cluster.local:8081
-          image: quay.io/jpacker/argocd-applicationset:0.1
+          image: quay.io/jpacker/argocd-applicationset:0.2
           imagePullPolicy: Always
           name: argocd-applicationset-controller
           env:

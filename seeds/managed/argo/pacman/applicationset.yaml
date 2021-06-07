@@ -5,7 +5,7 @@ metadata:
   namespace: openshift-gitops
 spec:
   generators:
-    - clusterListResource:
+    - clusterDecisionResource:
         configMapRef: acm-placementrule
         name: pacman-placement
         requeueAfterSeconds: 30
