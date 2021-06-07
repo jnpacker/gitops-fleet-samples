@@ -36,14 +36,14 @@ spec:
   #numberOfClusters: 6
   clusterSets:
   - all-clusters
-  predicates:
-  - requiredClusterSelector:
-      labelSelector:
-        #matchLabels:
-        #  vendor: OpenShift
-        matchExpressions:
-        - key: usage
-          operator: "In"
-          values:
-          - production
-          - development
+  #predicates:
+  #- requiredClusterSelector:
+  #    labelSelector:
+  #      #matchLabels:
+  #      #  vendor: OpenShift
+  #      matchExpressions:
+  #      - key: usage
+  #        operator: "In"
+  #        values:
+  #        - production
+  #        - development
