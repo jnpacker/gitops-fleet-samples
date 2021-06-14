@@ -11,7 +11,7 @@ spec:
   source:
     path: deploy
     repoURL: 'https://github.com/jnpacker/cloud-provider-quota-check.git'
-    targetRevision: argocd-deploy
+    targetRevision: main
   project: default
   syncPolicy:
     automated:
