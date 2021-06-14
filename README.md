@@ -10,7 +10,7 @@ Policies and Applications.
 * OpenShift GitOps (Argo CD)
 * Fork of the repository
 * Clusters (for import) or Cloud Provider (for provisioning)
-* Subscription Admin role.
+* Subscription Admin role. (Connect to your hub and run the `./makeAppSubAdmin` script
 
 ## What makes it work
 The key is identifying clusters for delivery of resources. In Kubernetes resources are Configuration, Policy compliance, and Applications.  This is 
