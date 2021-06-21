@@ -71,9 +71,9 @@ rules:
   - cluster.open-cluster-management.io
   resources:
   - placementrules
-  - placement
+  - placementdecisions
   verbs:
-  - get
+  - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
