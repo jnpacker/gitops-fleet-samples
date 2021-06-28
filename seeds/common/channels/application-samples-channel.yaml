@@ -4,6 +4,8 @@ kind: Channel
 metadata:
   name: gitops
   namespace: application-samples
+  annotations:
+    apps.open-cluster-management.io/reconcile-rate: high
 spec:
   type: GitHub
   pathname: https://github.com/jnpacker/application-samples.git
