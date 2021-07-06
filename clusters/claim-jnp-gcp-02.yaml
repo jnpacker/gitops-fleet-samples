@@ -1,0 +1,10 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterClaim
+metadata:
+  name: jnp-gcp-02
+  namespace: my-pools
+  labels:
+    usage: development
+spec:
+  clusterPoolName: gcp-europe-west  # Create a cluster pool using the Infrastructure > Clusters > Cluster pools console

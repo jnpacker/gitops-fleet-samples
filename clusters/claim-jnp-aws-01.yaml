@@ -1,0 +1,10 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterClaim
+metadata:
+  name: jnp-aws-01
+  namespace: my-pools
+  labels:
+    usage: production
+spec:
+  clusterPoolName: aws-east  # Create a cluster pool using the Infrastructure > Clusters > Cluster pools console
