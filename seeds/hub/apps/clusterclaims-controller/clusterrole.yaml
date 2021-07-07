@@ -1,0 +1,67 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: clusterclaims-controller
+rules:
+
+# New Rules added to ClusterInstaller
+# Leader Lock requires configmaps(create&get) and pods(get)
+- apiGroups: ["hive.openshift.io"]
+  resources: ["clusterclaims"]
+  verbs: ["get","list","watch","update"]
+
+- apiGroups:
+  - "cluster.open-cluster-management.io"
+  - "agent.open-cluster-management.io"
+  resources:
+  - managedclusters
+  - klusterletaddonconfigs
+  verbs:
+  - get
+  - list
+  - create
+  - delete
+  - watch
+
+- apiGroups:
+  - "register.open-cluster-management.io"
+  resources:
+  - managedclusters/accept
+  verbs:
+  - update
+
+- apiGroups:
+  - "cluster.open-cluster-management.io"
+  resources:
+  - managedclustersets/join
+  verbs:
+  - create
+
+# Leader election
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps/status
+  verbs:
+  - get
+  - update
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
