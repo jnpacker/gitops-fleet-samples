@@ -1,7 +1,7 @@
 resources:
-- claim-jnp-aws-01.yaml
+#- claim-jnp-aws-01.yaml
 #- claim-jnp-aws-02.yaml
-- claim-jnp-azure-01.yaml
+#- claim-jnp-azure-01.yaml
 #- claim-jnp-azure-02.yaml
-- claim-jnp-gcp-01.yaml
+#- claim-jnp-gcp-01.yaml
 #- claim-jnp-azure-02.yaml
