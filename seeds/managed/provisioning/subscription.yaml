@@ -22,7 +22,6 @@ metadata:
     apps.open-cluster-management.io/git-branch: cluster-management
     apps.open-cluster-management.io/git-path: clusters
     apps.open-cluster-management.io/reconcile-option: merge
-    apps.open-cluster-management.io/reconcile-rate: off
   labels:
     app: sno-cluster-provisioning
   name: sno-cluster-provisioning-subscription-1
