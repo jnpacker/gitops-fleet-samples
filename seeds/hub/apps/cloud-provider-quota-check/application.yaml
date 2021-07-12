@@ -23,15 +23,15 @@ spec:
 apiVersion: v1                      
 kind: Namespace
 metadata:
-  name: ggithubcom-jnpacker-cloud-provider-quota-check-ns
+  name: cloud-provider-quota-check-ns
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: Channel
 metadata:
   annotations:
     apps.open-cluster-management.io/reconcile-rate: low
-  name: ggithubcom-jnpacker-cloud-provider-quota-check
-  namespace: ggithubcom-jnpacker-cloud-provider-quota-check-ns
+  name: cloud-provider-quota-check
+  namespace: cloud-provider-quota-check-ns
 spec:
   type: Git
   pathname: 'https://github.com/jnpacker/cloud-provider-quota-check.git'
@@ -48,7 +48,7 @@ metadata:
   name: cloud-provider-quota-check-subscription-1
   namespace: cloud-provider-quota-check
 spec:
-  channel: ggithubcom-jnpacker-cloud-provider-quota-check-ns/ggithubcom-jnpacker-cloud-provider-quota-check
+  channel: cloud-provider-quota-check-ns/cloud-provider-quota-check
   placement:
     placementRef:
       kind: PlacementRule
