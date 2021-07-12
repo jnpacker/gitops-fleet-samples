@@ -1,0 +1,12 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cloudprovider-quotacheck
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["secrets"]
+  verbs: ["list"]
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["events"]
+  verbs: ["create", "get", "patch"]

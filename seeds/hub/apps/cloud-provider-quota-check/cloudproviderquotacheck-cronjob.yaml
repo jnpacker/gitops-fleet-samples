@@ -1,0 +1,22 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cloudprovider-quotacheck-cronjob
+spec:
+  schedule: "59 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: cloudprovider-quotacheck
+          containers:
+          - name: worker
+            image: quay.io/jpacker/cloud-provider-quota-check@latest
+            command: ['python','main.py']
+            env:
+            - name: PYTHONWARNINGS
+              value: "ignore:Unverified HTTPS request"
+            - name: CM_THRESHOLD
+              value: "85"
+          restartPolicy: OnFailure
