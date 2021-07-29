@@ -7,7 +7,7 @@ metadata:
   namespace: openshift-gitops
 spec:
   argoServer:
-    #cluster: local-cluster
+    cluster: josh
     argoNamespace: openshift-gitops
   placementRef:
     kind: Placement
@@ -30,7 +30,7 @@ spec:
 apiVersion: cluster.open-cluster-management.io/v1alpha1
 kind: Placement
 metadata:
-  #name: local-cluster
+  name: local-cluster
   namespace: openshift-gitops
 spec:
   #numberOfClusters: 6
