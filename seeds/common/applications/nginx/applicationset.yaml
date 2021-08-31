@@ -31,3 +31,4 @@ spec:
           selfHeal: false
         syncOptions:
           - CreateNamespace=true
+          - PrunePropagationPolicy=non-cascading
