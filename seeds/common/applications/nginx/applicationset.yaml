@@ -7,8 +7,11 @@ spec:
   generators:
     - clusterDecisionResource:
         configMapRef: acm-placement
-        name: all-clusters
+        #name: local-cluster
         requeueAfterSeconds: 30
+        labelSelector:
+          matchLabels:              # OPTIONAL
+            cluster.open-cluster-management.io/placement: local-cluster
   template: 
     # This is a template Argo CD Application, but with support for parameter substitution.
     metadata:
