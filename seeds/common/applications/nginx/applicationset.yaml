@@ -6,7 +6,7 @@ metadata:
 spec:
   generators:
     - clusterDecisionResource:
-        configMapRef: acm-placementrule
+        configMapRef: acm-placement
         name: all-clusters
         requeueAfterSeconds: 30
   template: 
