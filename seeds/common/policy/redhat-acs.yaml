@@ -42,6 +42,38 @@ spec:
                   source: redhat-operators
                   sourceNamespace: openshift-marketplace
                   startingCSV: rhacs-operator.v3.64.1
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: managed-cluster-security-endpoints
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: platform.stackrox.io/v1alpha1
+                kind: SecuredCluster
+                metadata:
+                  namespace: stackrox
+                  name: stackrox-secured-cluster-services
+                spec:
+                  clusterName: |
+                    {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
+                  auditLogs:
+                    collection: Auto
+                  centralEndpoint: |
+                    {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
+                  admissionControl:
+                    listenOnCreates: false
+                    listenOnEvents: true
+                    listenOnUpdates: false
+                  perNode:
+                    collector:
+                    collection: KernelModule
+                    imageFlavor: Regular
+                    taintToleration: TolerateTaints
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
