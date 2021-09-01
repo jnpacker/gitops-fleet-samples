@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name:redhat-acs-installed
+  name: redhat-acs-installed
   namespace: policy
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
