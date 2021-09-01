@@ -1,9 +1,4 @@
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: stackrox-central-services
----
 apiVersion: platform.stackrox.io/v1alpha1
 kind: Central
 metadata:
