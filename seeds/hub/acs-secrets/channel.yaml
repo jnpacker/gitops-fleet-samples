@@ -1,0 +1,11 @@
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: acs-init-bundle-ch
+  namespace: acs-init-bundle-ch
+spec:
+  type: Namespace
+  pathname: secrets
+  sourceNamespaces:
+    - acs-init-bundle-ch
