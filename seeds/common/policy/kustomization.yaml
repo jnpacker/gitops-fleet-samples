@@ -12,3 +12,5 @@ resources:
 #- complianceoperator.yaml
 - placement.yaml
 - placement-no-snc.yaml
+- placement-no-ocp.yaml
+- placement-ocp.yaml
