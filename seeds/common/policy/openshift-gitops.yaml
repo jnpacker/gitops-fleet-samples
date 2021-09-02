@@ -49,7 +49,7 @@ metadata:
   name: binding-argo-development
   namespace: policy
 placementRef:
-  name: all-clusters
+  name: all-openshift
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:

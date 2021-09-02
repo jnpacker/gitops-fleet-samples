@@ -11,4 +11,3 @@ spec:
         operator: In
         values:
           - OpenShift
-          - GKE
