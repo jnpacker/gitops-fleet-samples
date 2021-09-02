@@ -2,7 +2,7 @@
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: all-clusters
+  name: all-openshift
 spec:
   clusterConditions:
     - status: 'True'
@@ -13,5 +13,4 @@ spec:
         operator: In
         values:
           - OpenShift
-          - GKE
           

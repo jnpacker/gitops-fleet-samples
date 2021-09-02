@@ -81,7 +81,7 @@ metadata:
   name: binding-acs-all-clusters
   namespace: policy
 placementRef:
-  name: all-openshift
+  name: all-clusters
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
