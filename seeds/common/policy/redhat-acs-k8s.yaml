@@ -33,6 +33,15 @@ spec:
                   name: openshift-operators
             - complianceType: musthave
               objectDefinition:
+                apiVersion: operators.coreos.com/v1
+                kind: OperatorGroup
+                metadata:
+                  annotations:
+                  name: global-operators
+                  namespace: openshift-operators
+                spec: {}
+            - complianceType: musthave
+              objectDefinition:
                 # This is an auto-generated file. DO NOT EDIT
                 apiVersion: operators.coreos.com/v1alpha1
                 kind: Subscription
