@@ -71,8 +71,8 @@ spec:
                     listenOnUpdates: false
                   perNode:
                     collector:
-                    collection: KernelModule
-                    imageFlavor: Regular
+                      collection: KernelModule
+                      imageFlavor: Regular
                     taintToleration: TolerateTaints
 ---
 apiVersion: policy.open-cluster-management.io/v1
