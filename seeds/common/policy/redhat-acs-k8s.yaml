@@ -1,0 +1,98 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: redhat-acs-installed-k8s
+  namespace: policy
+  annotations:
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.DS Data Security
+    policy.open-cluster-management.io/controls: PR.DS-1 Data-at-rest
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: redhat-acs-installed-k8s
+        spec:
+          remediationAction: enforce
+          severity: med
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: operators
+            - complianceType: musthave
+              objectDefinition:
+                # This is an auto-generated file. DO NOT EDIT
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: Subscription
+                metadata:
+                  name: rhacs-operator
+                  namespace: operators
+                  labels:
+                      operators.coreos.com/rhacs-operator.openshift-operators: ''
+                spec:
+                  channel: latest
+                  installPlanApproval: Automatic
+                  name: rhacs-operator
+                  source: redhat-operators
+                  sourceNamespace: olm
+                  startingCSV: rhacs-operator.v3.65.0
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: managed-cluster-security-endpoints-k8s
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: platform.stackrox.io/v1alpha1
+                kind: SecuredCluster
+                metadata:
+                  namespace: stackrox
+                  name: stackrox-secured-cluster-services
+                spec:
+                  clusterName: |
+                    {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
+                  auditLogs:
+                    collection: Auto
+                  centralEndpoint: |
+                    {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
+                  admissionControl:
+                    listenOnCreates: false
+                    listenOnEvents: true
+                    listenOnUpdates: false
+                  perNode:
+                    collector:
+                      collection: KernelModule
+                      imageFlavor: Regular
+                    taintToleration: TolerateTaints
+                  imagePullSecrets:
+                    - name: openshift-pull-secret
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-acs-k8s-clusters
+  namespace: policy
+placementRef:
+  name: non-openshift
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: redhat-acs-installed-k8s
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io

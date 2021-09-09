@@ -1,8 +1,0 @@
----
-apiVersion: hive.openshift.io/v1
-kind: MachinePool
-metadata:
-  name: jnp4719-aws-worker
-  namespace: jnp4719-aws
-spec:
-  replicas: 4
