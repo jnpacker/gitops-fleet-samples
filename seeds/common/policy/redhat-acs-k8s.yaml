@@ -30,7 +30,7 @@ spec:
                 apiVersion: v1
                 kind: Namespace
                 metadata:
-                  name: openshift-operators
+                  name: operators
             - complianceType: musthave
               objectDefinition:
                 # This is an auto-generated file. DO NOT EDIT
@@ -38,7 +38,7 @@ spec:
                 kind: Subscription
                 metadata:
                   name: rhacs-operator
-                  namespace: openshift-operators
+                  namespace: operators
                   labels:
                       operators.coreos.com/rhacs-operator.openshift-operators: ''
                 spec:
