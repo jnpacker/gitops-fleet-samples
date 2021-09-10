@@ -7,6 +7,7 @@ metadata:
   name: operator-lifecycle-management-k8s-placement-1
   namespace: olm
 spec:
+  clusterSelector:
     matchExpressions:
       - key: vendor
         operator: NotIn
