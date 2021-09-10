@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: openshift-gitops-installed
+  name: k8s-argocd-installed
   namespace: policy
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
@@ -15,7 +15,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: openshift-gitops-installed
+          name: k8s-argocd-installed
         spec:
           remediationAction: enforce
           severity: med
@@ -31,28 +31,27 @@ spec:
                 apiVersion: operators.coreos.com/v1alpha1
                 kind: Subscription
                 metadata:
-                  name: openshift-gitops-operator
+                  name: k8s-argocd-operator
                   namespace: openshift-operators
                   labels:
                     operators.coreos.com/openshift-gitops-operator.openshift-operators: ''
                 spec:
-                  channel: stable
+                  channel: alpha
                   installPlanApproval: Automatic
-                  name: openshift-gitops-operator
-                  source: redhat-operators
+                  name: argocd-operator
+                  source: operatorhubio-catalog
                   sourceNamespace: openshift-marketplace
-                  startingCSV: openshift-gitops-operator.v1.1.0
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-argo-development
+  name: binding-k8s-argo-development
   namespace: policy
 placementRef:
-  name: all-openshift
+  name: non-openshift
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: openshift-gitops-installed
+  - name: k8s-argocd-installed
     kind: Policy
     apiGroup: policy.open-cluster-management.io
