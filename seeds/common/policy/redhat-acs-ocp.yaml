@@ -74,6 +74,8 @@ spec:
                       collection: KernelModule
                       imageFlavor: Regular
                     taintToleration: TolerateTaints
+                  imagePullSecrets:
+                    - name: openshift-pull-secret
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
@@ -81,7 +83,7 @@ metadata:
   name: binding-acs-ocp-clusters
   namespace: policy
 placementRef:
-  name: all-openshift
+  name: all-clusters
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:

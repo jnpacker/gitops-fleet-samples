@@ -12,7 +12,7 @@ resources:
 - k8s-ocp-pull-secrets.yaml
 #- imagemanifestvulnerability.yaml
 #- complianceoperator.yaml
-- placement.yaml
+- placement-all.yaml
 - placement-no-snc.yaml
 - placement-no-ocp.yaml
 - placement-ocp.yaml
