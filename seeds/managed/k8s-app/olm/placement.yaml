@@ -1,0 +1,14 @@
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  labels:
+    app: operator-lifecycle-management-k8s
+  name: operator-lifecycle-management-k8s-placement-1
+  namespace: olm
+spec:
+    matchExpressions:
+      - key: vendor
+        operator: NotIn
+        values:
+          - OpenShift
