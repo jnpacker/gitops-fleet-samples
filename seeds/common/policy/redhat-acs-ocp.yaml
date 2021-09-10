@@ -80,7 +80,7 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-acs-ocp-clusters
+  name: binding-acs-all-clusters
   namespace: policy
 placementRef:
   name: all-clusters
