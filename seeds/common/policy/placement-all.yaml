@@ -10,7 +10,7 @@ spec:
   clusterSelector:
     matchExpressions:
       - key: vendor
-        operator: NotIn
+        operator: In
         values:
           - OpenShift
           - GKE
