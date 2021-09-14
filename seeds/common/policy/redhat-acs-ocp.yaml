@@ -76,6 +76,67 @@ spec:
                     taintToleration: TolerateTaints
                   imagePullSecrets:
                     - name: openshift-pull-secret
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: redhat-acs-secrets
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  namespace: openshift-config
+                  annotations:
+                  creationTimestamp: null
+                  name: collector-tls
+                data:
+                  ca.pem: |
+                    {{hub fromSecret "openshift-config" "collector-tls" "ca.pem" hub}}
+                  collector-cert.pem: |
+                    {{hub fromSecret "openshift-config" "collector-tls" "collector-cert.pem" hub}}
+                  collector-key.pem: |
+                    {{hub fromSecret "openshift-config" "collector-tls" "collector-key.pem" hub}}
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  namespace: openshift-config
+                  annotations:
+                  creationTimestamp: null
+                  name: sensor-tls
+                data:
+                  acs-host: |
+                    {{hub fromSecret "openshift-config" "sensor-tls" "acs-host" hub}}
+                  ca.pem: |
+                    {{hub fromSecret "openshift-config" "sensor-tls" "ca.pem" hub}}
+                  sensor-cert.pem: |
+                    {{hub fromSecret "openshift-config" "sensor-tls" "sensor-cert.pem" hub}}
+                  sensor-key.pem: |
+                    {{hub fromSecret "openshift-config" "sensor-tls" "sensor-key.pem" hub}}
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  namespace: openshift-config
+                  annotations:
+                  creationTimestamp: null
+                  name: admission-control-tls
+                data:
+                  ca.pem: |
+                    {{hub fromSecret "openshift-config" "admission-control-tls" "ca.pem" hub}}
+                  admission-control-cert.pem: |
+                    {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-cert.pem" hub}}
+                  admission-control-key.pem: |
+                    {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-key.pem" hub}}
+
+
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
