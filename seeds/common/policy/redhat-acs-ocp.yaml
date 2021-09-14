@@ -60,11 +60,11 @@ spec:
                   name: stackrox-secured-cluster-services
                 spec:
                   clusterName: |
-                    {{hub fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec hub}}
+                    {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
                   auditLogs:
                     collection: Auto
                   centralEndpoint: |
-                    {{hub fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec hub}}
+                    {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
                   admissionControl:
                     listenOnCreates: false
                     listenOnEvents: true
@@ -76,6 +76,20 @@ spec:
                     taintToleration: TolerateTaints
                   imagePullSecrets:
                     - name: openshift-pull-secret
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: redhat-acs-secrets
+  namespace: openshift-config
+  annotations:
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.DS Data Security
+    policy.open-cluster-management.io/controls: PR.DS-1 Data-at-rest
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
@@ -90,9 +104,7 @@ spec:
                 apiVersion: v1
                 kind: Secret
                 metadata:
-                  namespace: openshift-config
-                  annotations:
-                  creationTimestamp: null
+                  namespace: stackrox
                   name: collector-tls
                 data:
                   ca.pem: |
@@ -106,9 +118,7 @@ spec:
                 apiVersion: v1
                 kind: Secret
                 metadata:
-                  namespace: openshift-config
-                  annotations:
-                  creationTimestamp: null
+                  namespace: stackrox
                   name: sensor-tls
                 data:
                   acs-host: |
@@ -124,9 +134,7 @@ spec:
                 apiVersion: v1
                 kind: Secret
                 metadata:
-                  namespace: openshift-config
-                  annotations:
-                  creationTimestamp: null
+                  namespace: stackrox
                   name: admission-control-tls
                 data:
                   ca.pem: |
@@ -135,8 +143,6 @@ spec:
                     {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-cert.pem" hub}}
                   admission-control-key.pem: |
                     {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-key.pem" hub}}
-
-
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
@@ -149,5 +155,8 @@ placementRef:
   apiGroup: apps.open-cluster-management.io
 subjects:
   - name: redhat-acs-installed
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io
+  - name: redhat-acs-secrets
     kind: Policy
     apiGroup: policy.open-cluster-management.io
