@@ -102,6 +102,12 @@ spec:
             - complianceType: musthave
               objectDefinition:
                 apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: stackrox
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
                 kind: Secret
                 metadata:
                   namespace: stackrox
