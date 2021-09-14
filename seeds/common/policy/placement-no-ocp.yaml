@@ -3,6 +3,7 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   name: non-openshift
+  namespace: policy
 spec:
   clusterConditions:
     - status: 'True'
@@ -13,4 +14,19 @@ spec:
         operator: NotIn
         values:
           - OpenShift
-          
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: non-openshift
+  namespace: openshift-config
+spec:
+  clusterConditions:
+    - status: 'True'
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - key: vendor
+        operator: NotIn
+        values:
+          - OpenShift          

@@ -2,7 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: redhat-acs-installed
-  namespace: policy
+  namespace: openshift-config
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
     policy.open-cluster-management.io/categories: PR.DS Data Security
@@ -60,11 +60,11 @@ spec:
                   name: stackrox-secured-cluster-services
                 spec:
                   clusterName: |
-                    {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
+                    {{hub fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec hub}}
                   auditLogs:
                     collection: Auto
                   centralEndpoint: |
-                    {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
+                    {{hub fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec hub}}
                   admissionControl:
                     listenOnCreates: false
                     listenOnEvents: true
@@ -81,7 +81,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-acs-all-clusters
-  namespace: policy
+  namespace: openshift-config
 placementRef:
   name: all-clusters
   kind: PlacementRule
