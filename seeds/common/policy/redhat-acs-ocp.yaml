@@ -74,8 +74,8 @@ spec:
                       collection: KernelModule
                       imageFlavor: Regular
                     taintToleration: TolerateTaints
-                  imagePullSecrets:
-                    - name: openshift-pull-secret
+                  #imagePullSecrets:
+                  #  - name: openshift-pull-secret
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
