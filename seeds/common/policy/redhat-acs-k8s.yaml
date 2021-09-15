@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: redhat-acs-installed
+  name: redhat-acs-installed-k8s
   namespace: openshift-config
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
@@ -15,7 +15,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: redhat-acs-installed
+          name: redhat-acs-installed-k8s
         spec:
           remediationAction: enforce
           severity: med
@@ -42,11 +42,20 @@ spec:
                   source: redhat-operators
                   sourceNamespace: openshift-marketplace
                   startingCSV: rhacs-operator.v3.65.0
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                imagePullSecrets:
+                - name: openshift-pull-secret
+                kind: ServiceAccount
+                metadata:
+                  name: rhacs-operator-controller-manager
+                  namespace: openshift-operators
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: managed-cluster-security-endpoints
+          name: managed-cluster-security-endpoints-k8s
         spec:
           remediationAction: enforce
           severity: high
@@ -74,13 +83,13 @@ spec:
                       collection: KernelModule
                       imageFlavor: Regular
                     taintToleration: TolerateTaints
-                  #imagePullSecrets:
-                  #  - name: openshift-pull-secret
+                  imagePullSecrets:
+                    - name: openshift-pull-secret
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: redhat-acs-secrets
+          name: redhat-acs-secrets-k8s
         spec:
           remediationAction: enforce
           severity: high
@@ -139,13 +148,14 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-acs-all-clusters
+  name: binding-acs-non-openshift
   namespace: openshift-config
 placementRef:
-  name: all-openshift
+  name: non-openshift
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: redhat-acs-installed
+  - name: redhat-acs-installed-k8s
     kind: Policy
     apiGroup: policy.open-cluster-management.io
+
