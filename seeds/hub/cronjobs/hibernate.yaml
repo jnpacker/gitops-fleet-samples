@@ -21,5 +21,5 @@ spec:
             name: worker
           restartPolicy: OnFailure
           serviceAccountName: hibernator
-  schedule: 0 22 * * 0-6
+  schedule: 50 21 * * 0-6
   suspend: false
