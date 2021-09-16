@@ -15,7 +15,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: k8s-argocd-installed
+          name: k8s-argocd-operator-installed
         spec:
           remediationAction: enforce
           severity: med
@@ -41,6 +41,39 @@ spec:
                   name: argocd-operator
                   source: operatorhubio-catalog
                   sourceNamespace: openshift-marketplace
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: k8s-argocd-installed
+        spec:
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: argocd
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: argoproj.io/v1alpha1
+                kind: ArgoCD
+                metadata:
+                  name: argocd
+                  namespace: argocd
+                spec:
+                  server:
+                    ingress:
+                      enabled: true
+                    route:
+                      enabled: false
+                    service:
+                      type: LoadBalancer
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
