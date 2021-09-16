@@ -46,40 +46,6 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: managed-cluster-security-endpoints
-        spec:
-          remediationAction: enforce
-          severity: high
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: platform.stackrox.io/v1alpha1
-                kind: SecuredCluster
-                metadata:
-                  namespace: stackrox
-                  name: stackrox-secured-cluster-services
-                spec:
-                  clusterName: |
-                    {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
-                  auditLogs:
-                    collection: Auto
-                  centralEndpoint: |
-                    {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
-                  admissionControl:
-                    listenOnCreates: false
-                    listenOnEvents: true
-                    listenOnUpdates: false
-                  perNode:
-                    collector:
-                      collection: KernelModule
-                      imageFlavor: Regular
-                    taintToleration: TolerateTaints
-                  #imagePullSecrets:
-                  #  - name: openshift-pull-secret
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
           name: redhat-acs-secrets
         spec:
           remediationAction: enforce
@@ -135,6 +101,40 @@ spec:
                     {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-cert.pem" hub}}
                   admission-control-key.pem: |
                     {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-key.pem" hub}}
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: managed-cluster-security-endpoints
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: platform.stackrox.io/v1alpha1
+                kind: SecuredCluster
+                metadata:
+                  namespace: stackrox
+                  name: stackrox-secured-cluster-services
+                spec:
+                  clusterName: |
+                    {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
+                  auditLogs:
+                    collection: Auto
+                  centralEndpoint: |
+                    {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
+                  admissionControl:
+                    listenOnCreates: false
+                    listenOnEvents: true
+                    listenOnUpdates: false
+                  perNode:
+                    collector:
+                      collection: KernelModule
+                      imageFlavor: Regular
+                    taintToleration: TolerateTaints
+                  #imagePullSecrets:
+                  #  - name: openshift-pull-secret
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding

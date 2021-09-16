@@ -7,7 +7,7 @@ resources:
 - openshift-gitops.yaml
 - k8s-argocd.yaml
 - redhat-acs-ocp.yaml
-- k8s-ocp-pull-secrets.yaml
+- redhat-acs-k8s.yaml
 #- imagemanifestvulnerability.yaml
 #- complianceoperator.yaml
 - placement-all.yaml

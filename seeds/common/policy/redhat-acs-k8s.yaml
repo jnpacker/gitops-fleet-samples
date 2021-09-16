@@ -12,6 +12,87 @@ spec:
   disabled: false
   policy-templates:
     - objectDefinition:
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: ConfigurationPolicy
+      metadata:
+        name: k8s-pull-secrets-namespaces
+      spec:
+        remediationAction: enforce
+        severity: med
+        namespaceSelector:
+          exclude:
+            - kube-*
+          include:
+            - default
+        object-templates:
+          - complianceType: musthave
+            objectDefinition:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: openshift-operators
+          - complianceType: musthave
+            objectDefinition:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: openshift-marketplace
+          - complianceType: musthave
+            objectDefinition:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: stackrox
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: k8s-pull-secrets
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: openshift-pull-secret
+                  namespace: openshift-operators
+                  annotations:
+                    apps.open-cluster-management.io/deployables: "secret"
+                data:
+                  .dockerconfigjson: |
+                    {{hub fromSecret "openshift-config" "pull-secret" ".dockerconfigjson" hub}}
+                type: kubernetes.io/dockerconfigjson
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: openshift-pull-secret
+                  namespace: openshift-marketplace
+                  annotations:
+                    apps.open-cluster-management.io/deployables: "secret"
+                data:
+                  .dockerconfigjson: | 
+                    {{hub fromSecret "openshift-config" "pull-secret" ".dockerconfigjson" hub}}
+                type: kubernetes.io/dockerconfigjson
+            # Work around for https://github.com/operator-framework/operator-lifecycle-manager/issues/2307
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: openshift-pull-secret
+                  namespace: stackrox
+                  annotations:
+                    apps.open-cluster-management.io/deployables: "secret"
+                data:
+                  .dockerconfigjson: | 
+                    {{hub fromSecret "openshift-config" "pull-secret" ".dockerconfigjson" hub}}
+                type: kubernetes.io/dockerconfigjson
+    - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
@@ -25,6 +106,15 @@ spec:
             include:
               - default
           object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                imagePullSecrets:
+                - name: openshift-pull-secret
+                kind: ServiceAccount
+                metadata:
+                  name: rhacs-operator-controller-manager
+                  namespace: openshift-operators
             - complianceType: musthave
               objectDefinition:
                 # This is an auto-generated file. DO NOT EDIT
@@ -51,40 +141,6 @@ spec:
                 metadata:
                   name: rhacs-operator-controller-manager
                   namespace: openshift-operators
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: managed-cluster-security-endpoints-k8s
-        spec:
-          remediationAction: enforce
-          severity: high
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: platform.stackrox.io/v1alpha1
-                kind: SecuredCluster
-                metadata:
-                  namespace: stackrox
-                  name: stackrox-secured-cluster-services
-                spec:
-                  clusterName: |
-                    {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
-                  auditLogs:
-                    collection: Auto
-                  centralEndpoint: |
-                    {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
-                  admissionControl:
-                    listenOnCreates: false
-                    listenOnEvents: true
-                    listenOnUpdates: false
-                  perNode:
-                    collector:
-                      collection: KernelModule
-                      imageFlavor: Regular
-                    taintToleration: TolerateTaints
-                  imagePullSecrets:
-                    - name: openshift-pull-secret
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
@@ -144,6 +200,40 @@ spec:
                     {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-cert.pem" hub}}
                   admission-control-key.pem: |
                     {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-key.pem" hub}}
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: managed-cluster-security-endpoints-k8s
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: platform.stackrox.io/v1alpha1
+                kind: SecuredCluster
+                metadata:
+                  namespace: stackrox
+                  name: stackrox-secured-cluster-services
+                spec:
+                  clusterName: |
+                    {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
+                  auditLogs:
+                    collection: Auto
+                  centralEndpoint: |
+                    {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
+                  admissionControl:
+                    listenOnCreates: false
+                    listenOnEvents: true
+                    listenOnUpdates: false
+                  perNode:
+                    collector:
+                      collection: KernelModule
+                      imageFlavor: Regular
+                    taintToleration: TolerateTaints
+                  imagePullSecrets:
+                    - name: openshift-pull-secret
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
