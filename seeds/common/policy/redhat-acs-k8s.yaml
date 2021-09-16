@@ -108,15 +108,6 @@ spec:
           object-templates:
             - complianceType: musthave
               objectDefinition:
-                apiVersion: v1
-                imagePullSecrets:
-                - name: openshift-pull-secret
-                kind: ServiceAccount
-                metadata:
-                  name: rhacs-operator-controller-manager-k8s
-                  namespace: openshift-operators
-            - complianceType: musthave
-              objectDefinition:
                 # This is an auto-generated file. DO NOT EDIT
                 apiVersion: operators.coreos.com/v1alpha1
                 kind: Subscription
@@ -132,6 +123,15 @@ spec:
                   source: redhat-operators
                   sourceNamespace: openshift-marketplace
                   startingCSV: rhacs-operator.v3.65.0
+           - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                imagePullSecrets:
+                - name: openshift-pull-secret
+                kind: ServiceAccount
+                metadata:
+                  name: rhacs-operator-controller-manager
+                  namespace: openshift-operators
             - complianceType: musthave
               objectDefinition:
                 apiVersion: apps/v1
@@ -141,6 +141,15 @@ spec:
                   namespace: openshift-operators
                 spec:
                   replicas: 0 #THIS DISABLES THE DEFAULT
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                imagePullSecrets:
+                - name: openshift-pull-secret
+                kind: ServiceAccount
+                metadata:
+                  name: rhacs-operator-controller-manager
+                  namespace: openshift-operators
             - complianceType: musthave
               objectDefinition:
                 apiVersion: apps/v1
@@ -295,8 +304,8 @@ spec:
                       schedulerName: default-scheduler
                       securityContext:
                         runAsNonRoot: true
-                      serviceAccount: rhacs-operator-controller-manager-k8s
-                      serviceAccountName: rhacs-operator-controller-manager-k8s
+                      serviceAccount: rhacs-operator-controller-manager
+                      serviceAccountName: rhacs-operator-controller-manager
                       terminationGracePeriodSeconds: 10
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
