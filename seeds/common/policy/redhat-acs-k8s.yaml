@@ -113,7 +113,7 @@ spec:
                 - name: openshift-pull-secret
                 kind: ServiceAccount
                 metadata:
-                  name: rhacs-operator-controller-manager
+                  name: rhacs-operator-controller-manager-k8s
                   namespace: openshift-operators
             - complianceType: musthave
               objectDefinition:
@@ -134,13 +134,170 @@ spec:
                   startingCSV: rhacs-operator.v3.65.0
             - complianceType: musthave
               objectDefinition:
-                apiVersion: v1
-                imagePullSecrets:
-                - name: openshift-pull-secret
-                kind: ServiceAccount
+                apiVersion: apps/v1
+                kind: Deployment
                 metadata:
                   name: rhacs-operator-controller-manager
                   namespace: openshift-operators
+                spec:
+                  replicas: 0 #THIS DISABLES THE DEFAULT
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: apps/v1
+                kind: Deployment
+                metadata:
+                  labels:
+                    olm.owner: rhacs-operator.v3.65.0
+                    olm.owner.kind: ClusterServiceVersion
+                    olm.owner.namespace: openshift-operators
+                    operators.coreos.com/rhacs-operator.openshift-operators: ""
+                  name: rhacs-operator-controller-manager-k8s
+                  namespace: openshift-operators
+                spec:
+                  progressDeadlineSeconds: 600
+                  replicas: 1
+                  revisionHistoryLimit: 1
+                  selector:
+                    matchLabels:
+                      app: rhacs-operator
+                      control-plane: controller-manager
+                  strategy:
+                    rollingUpdate:
+                      maxSurge: 25%
+                      maxUnavailable: 25%
+                    type: RollingUpdate
+                  template:
+                    metadata:
+                      annotations:
+                        alm-examples: |-
+                          [
+                            {
+                              "apiVersion": "platform.stackrox.io/v1alpha1",
+                              "kind": "Central",
+                              "metadata": {
+                                "name": "stackrox-central-services",
+                                "namespace": "stackrox"
+                              },
+                              "spec": {
+                                "central": {
+                                  "exposure": {
+                                    "route": {
+                                      "enabled": true
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "apiVersion": "platform.stackrox.io/v1alpha1",
+                              "kind": "SecuredCluster",
+                              "metadata": {
+                                "name": "stackrox-secured-cluster-services",
+                                "namespace": "stackrox"
+                              },
+                              "spec": {
+                                "clusterName": "my-cluster"
+                              }
+                            }
+                          ]
+                        capabilities: Seamless Upgrades
+                        categories: Security
+                        containerImage: registry.redhat.io/advanced-cluster-security/rhacs-rhel8-operator@sha256:eb747779369b369f20c205afc3b3d462309bc54869adb926aed1e2f186dadb03
+                        createdAt: "2021-09-03T09:10:36.126930+00:00"
+                        description: Red Hat Advanced Cluster Security (RHACS) operator provisions
+                          the services necessary to secure each of your OpenShift and Kubernetes clusters.
+                        olm.operatorGroup: olm-operators
+                        olm.operatorNamespace: openshift-operators
+                        olm.skipRange: '>= 3.64.0 < 3.65.0'
+                        olm.targetNamespaces: ""
+                        operatorframework.io/properties: '{"properties":[{"type":"olm.gvk","value":{"group":"platform.stackrox.io","kind":"Central","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"platform.stackrox.io","kind":"SecuredCluster","version":"v1alpha1"}},{"type":"olm.package","value":{"packageName":"rhacs-operator","version":"3.65.0"}}]}'
+                        operators.openshift.io/infrastructure-features: '["disconnected", "proxy-aware"]'
+                        operators.operatorframework.io/builder: operator-sdk-v1.8.0+git
+                        operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
+                        support: Red Hat
+                      creationTimestamp: null
+                      labels:
+                        app: rhacs-operator
+                        control-plane: controller-manager
+                    spec:
+                      containers:
+                      - args:
+                        - --secure-listen-address=0.0.0.0:8443
+                        - --upstream=http://127.0.0.1:8080/
+                        - --logtostderr=true
+                        - --v=10
+                        env:
+                        - name: OPERATOR_CONDITION_NAME
+                          value: rhacs-operator.v3.65.0
+                        image: registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71c2b03f01b0af6cb349e06bc2dc035a81e10f420ffb6358a4fdc5494bb57171
+                        imagePullPolicy: IfNotPresent
+                        name: kube-rbac-proxy
+                        ports:
+                        - containerPort: 8443
+                          name: https
+                          protocol: TCP
+                        resources: {}
+                        terminationMessagePath: /dev/termination-log
+                        terminationMessagePolicy: File
+                      - args:
+                        - --health-probe-bind-address=:8081
+                        - --metrics-bind-address=127.0.0.1:8080
+                        - --leader-elect
+                        env:
+                        - name: RELATED_IMAGE_MAIN
+                          value: registry.redhat.io/rh-acs/main@sha256:dc13e3ff268e45309dc6c674396094a3d8777111a612c0cb143049e44c6241f9
+                        - name: RELATED_IMAGE_SCANNER
+                          value: registry.redhat.io/rh-acs/scanner@sha256:07cebc1cbca22002d69dbcd2bae8e6033cb9020b047360347f16c5cb5305cc37
+                        - name: RELATED_IMAGE_SCANNER_DB
+                          value: registry.redhat.io/rh-acs/scanner-db@sha256:0d27694909f67ee50f80077fac91cfbff4ff41cbf50a31e289c15b2838110f08
+                        - name: RELATED_IMAGE_COLLECTOR_SLIM
+                          value: registry.redhat.io/rh-acs/collector@sha256:0663df17c38644b3292cacf4aa039c3d10af9f0a368659b2c631fc6e68c39442
+                        - name: RELATED_IMAGE_COLLECTOR_FULL
+                          value: registry.redhat.io/rh-acs/collector@sha256:e5a9524efaf7adfb79341048ef2c4fa567e5efd64d208c15e5b26de1fd97e351
+                        - name: OPERATOR_CONDITION_NAME
+                          value: rhacs-operator.v3.65.0
+                        image: registry.redhat.io/advanced-cluster-security/rhacs-rhel8-operator@sha256:eb747779369b369f20c205afc3b3d462309bc54869adb926aed1e2f186dadb03
+                        imagePullPolicy: IfNotPresent
+                        livenessProbe:
+                          failureThreshold: 3
+                          httpGet:
+                            path: /healthz
+                            port: 8081
+                            scheme: HTTP
+                          initialDelaySeconds: 15
+                          periodSeconds: 20
+                          successThreshold: 1
+                          timeoutSeconds: 1
+                        name: manager
+                        readinessProbe:
+                          failureThreshold: 3
+                          httpGet:
+                            path: /readyz
+                            port: 8081
+                            scheme: HTTP
+                          initialDelaySeconds: 5
+                          periodSeconds: 10
+                          successThreshold: 1
+                          timeoutSeconds: 1
+                        resources:
+                          limits:
+                            cpu: 100m
+                            memory: 1Gi
+                          requests:
+                            cpu: 100m
+                            memory: 200Mi
+                        securityContext:
+                          allowPrivilegeEscalation: false
+                        terminationMessagePath: /dev/termination-log
+                        terminationMessagePolicy: File
+                      dnsPolicy: ClusterFirst
+                      restartPolicy: Always
+                      schedulerName: default-scheduler
+                      securityContext:
+                        runAsNonRoot: true
+                      serviceAccount: rhacs-operator-controller-manager-k8s
+                      serviceAccountName: rhacs-operator-controller-manager-k8s
+                      terminationGracePeriodSeconds: 10
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
