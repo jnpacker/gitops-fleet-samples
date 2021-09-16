@@ -14,3 +14,4 @@ resources:
 - placement-no-snc.yaml
 - placement-no-ocp.yaml
 - placement-ocp.yaml
+- placement-hub.yaml

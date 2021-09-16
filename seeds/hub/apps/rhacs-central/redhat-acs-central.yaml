@@ -1,34 +1,78 @@
----
-apiVersion: v1
-kind: Namespace
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
 metadata:
-  name: stackrox-central-services
----
-apiVersion: platform.stackrox.io/v1alpha1
-kind: Central
-metadata:
-  namespace: stackrox-central-services
-  name: stackrox-central-services
+  name: redhat-acs-central-installed
+  namespace: policy
+  annotations:
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.DS Data Security
+    policy.open-cluster-management.io/controls: PR.DS-1 Data-at-rest
 spec:
-  central:
-    exposure:
-      loadBalancer:
-        enabled: false
-        port: 443
-      nodePort:
-        enabled: false
-      route:
-        enabled: true
-    persistence:
-      persistentVolumeClaim:
-        claimName: stackrox-db
-  egress:
-    connectivityPolicy: Online
-  scanner:
-    analyzer:
-      scaling:
-        autoScaling: Enabled
-        maxReplicas: 5
-        minReplicas: 2
-        replicas: 3
-    scannerComponent: Enabled
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: redhat-acs-central-installed
+        spec:
+          remediationAction: enforce
+          severity: med
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                # This is an auto-generated file. DO NOT EDIT
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: stackrox-central-services
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: platform.stackrox.io/v1alpha1
+                kind: Central
+                metadata:
+                  namespace: stackrox-central-services
+                  name: stackrox-central-services
+                spec:
+                  central:
+                    exposure:
+                      loadBalancer:
+                        enabled: false
+                        port: 443
+                      nodePort:
+                        enabled: false
+                      route:
+                        enabled: true
+                    persistence:
+                      persistentVolumeClaim:
+                        claimName: stackrox-db
+                  egress:
+                    connectivityPolicy: Online
+                  scanner:
+                    analyzer:
+                      scaling:
+                        autoScaling: Enabled
+                        maxReplicas: 5
+                        minReplicas: 2
+                        replicas: 3
+                    scannerComponent: Enabled
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-acs-central-hub
+  namespace: policy
+placementRef:
+  name: hub-openshift
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: redhat-acs-central-installed
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io

@@ -123,7 +123,7 @@ spec:
                   source: redhat-operators
                   sourceNamespace: openshift-marketplace
                   startingCSV: rhacs-operator.v3.65.0
-           - complianceType: musthave
+            - complianceType: musthave
               objectDefinition:
                 apiVersion: v1
                 imagePullSecrets:
