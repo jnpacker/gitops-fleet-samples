@@ -134,6 +134,18 @@ spec:
                   namespace: openshift-operators
             - complianceType: musthave
               objectDefinition:
+                apiVersion: apps/v1
+                kind: Deployment
+                metadata:
+                  name: rhacs-operator-controller-manager
+                  namespace: openshift-operators
+                spec:
+                  template:
+                    metadata:
+                      annotations:
+                        deployed-at: resync
+            - complianceType: musthave
+              objectDefinition:
                 apiVersion: v1
                 imagePullSecrets:
                 - name: openshift-pull-secret
