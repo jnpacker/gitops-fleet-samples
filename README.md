@@ -9,7 +9,7 @@ Policies and Applications.
 * Open Cluster Management for Kubernetes
 * OpenShift GitOps (Argo CD)
 * Fork of the repository
-* Clusters (for import) or Cloud Provider (for provisioning)
+* Clusters (for import) or Cloud Provider (for provisioning) or *ks (for import)
 * Subscription Admin role. (Connect to your hub and run the `./makeAppSubAdmin` script
 
 ## What makes it work
