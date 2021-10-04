@@ -3,6 +3,6 @@ resources:
 #- claim-jnp-aws-02.yaml
 #- claim-jnp-aws-03.yaml
 - claim-jnp-azure-01.yaml
-- claim-jnp-azure-02.yaml
+#- claim-jnp-azure-02.yaml
 - claim-jnp-gcp-01.yaml
 #- claim-jnp-gcp-02.yaml
