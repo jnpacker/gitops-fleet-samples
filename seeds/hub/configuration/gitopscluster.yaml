@@ -1,6 +1,6 @@
 # This is for the local ARGO on the Hub
 ---
-apiVersion: apps.open-cluster-management.io/v1alpha1
+apiVersion: apps.open-cluster-management.io/v1beta1
 kind: GitOpsCluster
 metadata:
   name: argo-acm-clusters-1
