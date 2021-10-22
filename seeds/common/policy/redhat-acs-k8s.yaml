@@ -61,7 +61,7 @@ spec:
                       staticConfig:
                         type: KUBERNETES_CLUSTER
                         mainImage: registry.redhat.io/rh-acs/main@sha256:dc13e3ff268e45309dc6c674396094a3d8777111a612c0cb143049e44c6241f9
-                        collectorImage: collector.stackrox.io/collector
+                        collectorImage: registry.redhat.io/rh-acs/collector@sha256:e5a9524efaf7adfb79341048ef2c4fa567e5efd64d208c15e5b26de1fd97e351
                         centralApiEndpoint: {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
                         collectionMethod: KERNEL_MODULE
                         admissionController: false
