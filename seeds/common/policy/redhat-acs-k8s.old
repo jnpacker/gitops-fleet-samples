@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: redhat-acs-installed
+  name: redhat-acs-installed-k8s
   namespace: openshift-config
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
@@ -12,10 +12,91 @@ spec:
   disabled: false
   policy-templates:
     - objectDefinition:
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: ConfigurationPolicy
+      metadata:
+        name: k8s-pull-secrets-namespaces
+      spec:
+        remediationAction: enforce
+        severity: med
+        namespaceSelector:
+          exclude:
+            - kube-*
+          include:
+            - default
+        object-templates:
+          - complianceType: musthave
+            objectDefinition:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: openshift-operators
+          - complianceType: musthave
+            objectDefinition:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: openshift-marketplace
+          - complianceType: musthave
+            objectDefinition:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: stackrox
+    - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: redhat-acs-installed
+          name: k8s-pull-secrets
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: openshift-pull-secret
+                  namespace: openshift-operators
+                  annotations:
+                    apps.open-cluster-management.io/deployables: "secret"
+                data:
+                  .dockerconfigjson: |
+                    {{hub fromSecret "openshift-config" "pull-secret" ".dockerconfigjson" hub}}
+                type: kubernetes.io/dockerconfigjson
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: openshift-pull-secret
+                  namespace: openshift-marketplace
+                  annotations:
+                    apps.open-cluster-management.io/deployables: "secret"
+                data:
+                  .dockerconfigjson: | 
+                    {{hub fromSecret "openshift-config" "pull-secret" ".dockerconfigjson" hub}}
+                type: kubernetes.io/dockerconfigjson
+            # Work around for https://github.com/operator-framework/operator-lifecycle-manager/issues/2307
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: openshift-pull-secret
+                  namespace: stackrox
+                  annotations:
+                    apps.open-cluster-management.io/deployables: "secret"
+                data:
+                  .dockerconfigjson: | 
+                    {{hub fromSecret "openshift-config" "pull-secret" ".dockerconfigjson" hub}}
+                type: kubernetes.io/dockerconfigjson
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: redhat-acs-installed-k8s
         spec:
           remediationAction: enforce
           severity: med
@@ -42,11 +123,50 @@ spec:
                   source: redhat-operators
                   sourceNamespace: openshift-marketplace
                   startingCSV: rhacs-operator.v3.65.0
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                imagePullSecrets:
+                - name: openshift-pull-secret
+                kind: ServiceAccount
+                metadata:
+                  name: rhacs-operator-controller-manager
+                  namespace: openshift-operators
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: apps/v1
+                kind: Deployment
+                metadata:
+                  name: rhacs-operator-controller-manager
+                  namespace: openshift-operators
+                spec:
+                  template:
+                    metadata:
+                      annotations:
+                        deployed-at: resync
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                imagePullSecrets:
+                - name: openshift-pull-secret
+                kind: ServiceAccount
+                metadata:
+                  name: rhacs-operator-controller-manager
+                  namespace: openshift-operators
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                imagePullSecrets:
+                - name: openshift-pull-secret
+                kind: ServiceAccount
+                metadata:
+                  name: rhacs-operator-controller-manager
+                  namespace: openshift-operators
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: redhat-acs-secrets
+          name: redhat-acs-secrets-k8s
         spec:
           remediationAction: enforce
           severity: high
@@ -101,26 +221,11 @@ spec:
                     {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-cert.pem" hub}}
                   admission-control-key.pem: |
                     {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-key.pem" hub}}
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: v1
-                kind: Secret
-                metadata:
-                  name: helm-effective-cluster-name
-                  namespace: stackrox
-                  labels:
-                    auto-upgrade.stackrox.io/component: sensor
-                  annotations:
-                    "helm.sh/hook": "pre-install,pre-upgrade"
-                    "helm.sh/resource-policy": "keep"
-                stringData:
-                  cluster-name: |
-                    {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: managed-cluster-security-endpoints
+          name: managed-cluster-security-endpoints-k8s
         spec:
           remediationAction: enforce
           severity: high
@@ -148,21 +253,20 @@ spec:
                       collection: KernelModule
                       imageFlavor: Regular
                     taintToleration: TolerateTaints
-                  #imagePullSecrets:
-                  #  - name: openshift-pull-secret
-
-
+                  imagePullSecrets:
+                    - name: openshift-pull-secret
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-acs-all-clusters
+  name: binding-acs-non-openshift
   namespace: openshift-config
 placementRef:
-  name: all-openshift
+  name: non-openshift
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: redhat-acs-installed
+  - name: redhat-acs-installed-k8s
     kind: Policy
     apiGroup: policy.open-cluster-management.io
+
