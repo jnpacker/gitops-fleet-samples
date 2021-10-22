@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: redhat-acs-installed
+  name: redhat-acs-k8s-installed
   namespace: openshift-config
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
@@ -114,13 +114,13 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-acs-all-clusters
+  name: binding-acs-k8s-clusters
   namespace: openshift-config
 placementRef:
   name: non-openshift
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: redhat-acs-installed
+  - name: redhat-acs-k8s-installed
     kind: Policy
     apiGroup: policy.open-cluster-management.io
