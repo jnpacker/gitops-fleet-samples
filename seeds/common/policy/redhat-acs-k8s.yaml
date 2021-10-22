@@ -110,6 +110,19 @@ spec:
                         - name: ROX_CENTRAL_ENDPOINT
                           value: |
                             {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: service-ca
+                  namespace: stackrox
+                  labels:
+                    auto-upgrade.stackrox.io/component: sensor
+                type: Opaque
+                stringData:
+                  ca.pem: |
+                    {{ fromSecret "stackrox" "sensor-tls" "ca.pem" | base64dec }}
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
