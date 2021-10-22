@@ -31,50 +31,6 @@ spec:
                 apiVersion: v1
                 kind: Secret
                 metadata:
-                  namespace: stackrox
-                  name: collector-tls
-                data:
-                  ca.pem: |
-                    {{hub fromSecret "openshift-config" "collector-tls" "ca.pem" hub}}
-                  collector-cert.pem: |
-                    {{hub fromSecret "openshift-config" "collector-tls" "collector-cert.pem" hub}}
-                  collector-key.pem: |
-                    {{hub fromSecret "openshift-config" "collector-tls" "collector-key.pem" hub}}
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: v1
-                kind: Secret
-                metadata:
-                  namespace: stackrox
-                  name: sensor-tls
-                data:
-                  acs-host: |
-                    {{hub fromSecret "openshift-config" "sensor-tls" "acs-host" hub}}
-                  ca.pem: |
-                    {{hub fromSecret "openshift-config" "sensor-tls" "ca.pem" hub}}
-                  sensor-cert.pem: |
-                    {{hub fromSecret "openshift-config" "sensor-tls" "sensor-cert.pem" hub}}
-                  sensor-key.pem: |
-                    {{hub fromSecret "openshift-config" "sensor-tls" "sensor-key.pem" hub}}
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: v1
-                kind: Secret
-                metadata:
-                  namespace: stackrox
-                  name: admission-control-tls
-                data:
-                  ca.pem: |
-                    {{hub fromSecret "openshift-config" "admission-control-tls" "ca.pem" hub}}
-                  admission-control-cert.pem: |
-                    {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-cert.pem" hub}}
-                  admission-control-key.pem: |
-                    {{hub fromSecret "openshift-config" "admission-control-tls" "admission-control-key.pem" hub}}
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: v1
-                kind: Secret
-                metadata:
                   name: helm-effective-cluster-name
                   namespace: stackrox
                   labels:
@@ -85,44 +41,48 @@ spec:
                 stringData:
                   cluster-name: |
                     {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: managed-cluster-security-endpoints
-        spec:
-          remediationAction: enforce
-          severity: high
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: apps/v1
-                kind: Deployment
-                metadata:
-                  name: sensor
-                  namespace: stackrox
-                spec:
-                  template:
-                    spec:
-                      containers:
-                      - name: sensor
-                        env:
-                        - name: ROX_CENTRAL_ENDPOINT
-                          value: |
-                            {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
             - complianceType: musthave
               objectDefinition:
                 apiVersion: v1
                 kind: Secret
                 metadata:
-                  name: service-ca
+                  name: helm-cluster-config
                   namespace: stackrox
                   labels:
                     auto-upgrade.stackrox.io/component: sensor
-                type: Opaque
+                  annotations:
+                    "helm.sh/hook": "pre-install,pre-upgrade"
+                    "helm.sh/resource-policy": "keep"
                 stringData:
-                  ca.pem: |
-                    {{ fromSecret "stackrox" "sensor-tls" "ca.pem" | base64dec }}
+                  conifg-yaml: |
+                    clusterName: {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
+                    notHelmManaged: false
+                    clusterConfig:
+                      staticConfig:
+                        type: KUBERNETES_CLUSTER
+                        mainImage: registry.redhat.io/rh-acs/main@sha256:dc13e3ff268e45309dc6c674396094a3d8777111a612c0cb143049e44c6241f9
+                        collectorImage: collector.stackrox.io/collector
+                        centralApiEndpoint: {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
+                        collectionMethod: KERNEL_MODULE
+                        admissionController: false
+                        admissionControllerUpdates: false
+                        admissionControllerEvents: true
+                        tolerationsConfig:
+                          disabled: false
+                        slimCollector: true
+                      dynamicConfig:
+                        disableAuditLogs: true
+                        admissionControllerConfig:
+                          enabled: false
+                          timeoutSeconds: 3
+                          scanInline: false
+                          disableBypass: false
+                          enforceOnUpdates: false
+                        registryOverride:
+                      configFingerprint: fbac0082230b35d6fd168994a044ed1f633c92705a7f15842a1a8b0bfc5fdc2f-1
+                      clusterLabels:
+                        null
+
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
