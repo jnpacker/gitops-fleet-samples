@@ -79,7 +79,7 @@ spec:
                           disableBypass: false
                           enforceOnUpdates: false
                         registryOverride:
-                      configFingerprint: 546678e136b1c2fc24cbd4db479812a041e7dcb7cc0fc9d0a2b208e0c87aac76-1
+                      configFingerprint: 5a9ae233f421e891bd75a3146004cd9cd4145c32edd1de2007dd1ea941ca7a44-1
                       clusterLabels:
                         null
 
