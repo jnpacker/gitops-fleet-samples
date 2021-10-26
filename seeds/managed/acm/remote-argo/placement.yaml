@@ -2,7 +2,7 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   name: remote-argo-app
-  namespace: hub-config
+  namespace: openshift-gitops
   labels:
     app: remote-argo-app
 spec:
