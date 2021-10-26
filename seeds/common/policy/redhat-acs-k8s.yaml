@@ -79,7 +79,7 @@ spec:
                           disableBypass: false
                           enforceOnUpdates: false
                         registryOverride:
-                      configFingerprint: 2e5ee1e496b8d77927afa7f07865506610e27faa9ddb4c3ae8b430656882afd1-2
+                      configFingerprint: {{ fromConfigMap  "stackrox" "helm-cluster-config" "configFingerprint" }}
                       clusterLabels:
                         null
 
