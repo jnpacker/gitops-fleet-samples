@@ -8,7 +8,7 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   labels:
-    operators.coreos.com/awx-resource-operator.tower: ""
+    operators.coreos.com/awx-resource-operator.tower: ''
   name: awx-resource-operator
   namespace: tower
 spec:
