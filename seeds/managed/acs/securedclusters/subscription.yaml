@@ -1,0 +1,31 @@
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: acs-init-secrets
+  namespace: stackrox
+  labels:
+    app: acs-securedcluster
+spec:
+  channel: init-bundle-ch/acs-init-secrets
+  #packageFilter:
+  #  annotations:
+  #    secretname: my-secret
+  placement:
+    placementRef:
+      kind: PlacementRule
+      name: acs-init-secrets
+
+###
+# The subscription that deploys the helm chart for stackrox secured cluster service is
+# found in the policy in hub/apps/rhacs-central, where it is able to extract the required ca.pem and
+# acs-host values, that the chart needs to deploy on *k8s
+#---
+#apiVersion: apps.open-cluster-management.io/v1
+#kind: Subscription
+#metadata:
+#  name: acs-securedcluster-subscription-1
+#  namespace: stackrox
+#
+
+

@@ -1,0 +1,22 @@
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: acs-init-secrets
+  namespace: init-bundle-ch
+spec:
+  type: Namespace
+  pathname: acs-init-secrets
+  sourceNamespaces:
+    - init-bundle-ch
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  annotations:
+    apps.open-cluster-management.io/reconcile-rate: medium
+  name: ggithubcom-jnpacker-helm-charts
+  namespace: ggithubcom-jnpacker-helm-charts-ns
+spec:
+  type: Git
+  pathname: 'https://github.com/jnpacker/helm-charts.git'

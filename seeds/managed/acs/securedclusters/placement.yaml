@@ -1,0 +1,30 @@
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  annotations:
+    secretname: acs-init-secrets
+  name: acs-init-secrets
+  namespace: stackrox
+spec: {}
+#  clusterSelector:
+#    matchExpressions:
+#      - key: vendor
+#        operator: NotIn
+#        values:
+#          - OpenShift
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  labels:
+    app: acs-securedcluster
+  name: acs-securedcluster-placement-1
+  namespace: stackrox
+spec:
+  clusterSelector:
+    matchExpressions:
+      - key: vendor
+        operator: NotIn
+        values:
+          - OpenShift  
