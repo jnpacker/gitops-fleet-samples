@@ -12,6 +12,6 @@ subjects:
   - name: redhat-acs-central-installed
     kind: Policy
     apiGroup: policy.open-cluster-management.io
-  - name: awx-resource-operator-installed
+  - name: ansible-automation-platform
     kind: Policy
     apiGroup: policy.open-cluster-management.io

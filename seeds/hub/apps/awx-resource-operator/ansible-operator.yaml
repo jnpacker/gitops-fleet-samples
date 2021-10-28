@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: awx-resource-operator-installed
+  name: ansible-automation-platform-operator-installed
   namespace: policy
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
@@ -15,7 +15,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: awx-resource-operator-installed
+          name: ansible-automation-platform-operator-installed
         spec:
           remediationAction: enforce
           severity: med
