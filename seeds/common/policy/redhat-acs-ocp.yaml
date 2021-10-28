@@ -2,7 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: redhat-acs-installed
-  namespace: openshift-config
+  namespace: policy
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
     policy.open-cluster-management.io/categories: PR.DS Data Security
@@ -83,7 +83,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-acs-all-clusters
-  namespace: openshift-config
+  namespace: policy
 placementRef:
   name: all-openshift
   kind: PlacementRule

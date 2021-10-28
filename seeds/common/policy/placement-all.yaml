@@ -8,14 +8,5 @@ spec:
   clusterConditions:
     - status: 'True'
       type: ManagedClusterConditionAvailable
----
-apiVersion: apps.open-cluster-management.io/v1
-kind: PlacementRule
-metadata:
-  name: all-clusters
-  namespace: openshift-config
-spec:
-  clusterConditions:
-    - status: 'True'
-      type: ManagedClusterConditionAvailable
+
           
