@@ -1,0 +1,49 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: awx-resource-operator-installed
+  namespace: policy
+  annotations:
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.DS Data Security
+    policy.open-cluster-management.io/controls: PR.DS-1 Data-at-rest
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: awx-resource-operator-installed
+        spec:
+          remediationAction: enforce
+          severity: med
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: tower
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: Subscription
+                metadata:
+                  labels:
+                    operators.coreos.com/awx-resource-operator.tower: ''
+                  name: awx-resource-operator
+                  namespace: tower
+                spec:
+                  channel: release-0.1
+                  installPlanApproval: Automatic
+                  name: awx-resource-operator
+                  source: redhat-operators
+                  sourceNamespace: openshift-marketplace
+                  startingCSV: awx-resource-operator.v0.1.1

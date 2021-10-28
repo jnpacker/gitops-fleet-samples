@@ -102,17 +102,4 @@ spec:
                             fullRef: registry.redhat.io/rh-acs/collector@sha256:e5a9524efaf7adfb79341048ef2c4fa567e5efd64d208c15e5b26de1fd97e351
                         createSecrets: false
                         allowNonstandardReleaseName: true
----
-apiVersion: policy.open-cluster-management.io/v1
-kind: PlacementBinding
-metadata:
-  name: binding-acs-central-hub
-  namespace: policy
-placementRef:
-  name: hub-openshift
-  kind: PlacementRule
-  apiGroup: apps.open-cluster-management.io
-subjects:
-  - name: redhat-acs-central-installed
-    kind: Policy
-    apiGroup: policy.open-cluster-management.io
+

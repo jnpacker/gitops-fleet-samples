@@ -1,0 +1,17 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: acm-hub
+  namespace: policy
+placementRef:
+  name: hub-openshift
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: redhat-acs-central-installed
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io
+  - name: awx-resource-operator-installed
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io
