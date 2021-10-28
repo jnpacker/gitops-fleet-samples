@@ -73,7 +73,7 @@ spec:
                     apps.open-cluster-management.io/reconcile-option: merge
                   labels:
                     app: acs-securedcluster
-                  name: acs-securedcluster-subscription-1
+                  name: acs-securedcluster-k8s-helm
                   namespace: stackrox
                 spec:
                   channel: ggithubcom-jnpacker-helm-charts-ns/ggithubcom-jnpacker-helm-charts
