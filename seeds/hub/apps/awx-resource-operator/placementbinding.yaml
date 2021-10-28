@@ -12,6 +12,6 @@ subjects:
   - name: redhat-acs-central-installed
     kind: Policy
     apiGroup: policy.open-cluster-management.io
-  - name: ansible-automation-platform
+  - name: ansible-automation-platform-operator-installed
     kind: Policy
     apiGroup: policy.open-cluster-management.io
