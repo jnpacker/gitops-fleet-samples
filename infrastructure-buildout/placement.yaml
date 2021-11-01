@@ -2,8 +2,8 @@
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: plumbing-placement
-  namespace: big-bang
+  name: infrastructure-buildout
+  namespace: seeds
 spec:
   clusterSelector:
     matchLabels:

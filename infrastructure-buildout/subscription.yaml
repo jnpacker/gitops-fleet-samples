@@ -7,14 +7,14 @@ metadata:
     apps.open-cluster-management.io/git-path: seeds
     apps.open-cluster-management.io/reconcile-option: merge
   labels:
-    app: big-bang
-  name: plumbing
-  namespace: big-bang
+    app: infrastructure-buildout
+  name: infrastructure-buildout
+  namespace: seeds
 spec:
   channel: big-bang/gitops-fleet-samples
   placement:
-    local: true
-    #placementRef:
-    #  kind: PlacementRule
-    #  name: plumbing-placement
+    #local: true
+    placementRef:
+      kind: PlacementRule
+      name: infrastructure-buildout
 
