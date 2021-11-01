@@ -4,6 +4,8 @@ kind: Channel
 metadata:
   name: gitops-fleet-samples
   namespace: big-bang
+  annotations:
+    apps.open-cluster-management.io/reconcile-rate: med
 spec:
   pathname: https://github.com/jnpacker/gitops-fleet-samples.git
   type: Git
