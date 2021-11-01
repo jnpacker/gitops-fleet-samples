@@ -24,26 +24,3 @@ metadata:
   namespace: openshift-gitops
 spec:
   clusterSet: all-clusters
-
-#This is the placement resource for targeting Managed Clusters for
----
-apiVersion: cluster.open-cluster-management.io/v1alpha1
-kind: Placement
-metadata:
-  name: local-cluster
-  namespace: openshift-gitops
-spec:
-  #numberOfClusters: 6
-  clusterSets:
-  - all-clusters
-  predicates:
-  - requiredClusterSelector:
-      labelSelector:
-      #  matchLabels:
-      #    vendor: OpenShift
-        matchExpressions:
-        - key: usage
-          operator: "In"
-          values:
-          - production
-          - development
