@@ -1,8 +1,0 @@
----
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  name: openshift-gitops-applicationset-controller
-  namespace: openshift-gitops
-spec:
-  replicas: 0
