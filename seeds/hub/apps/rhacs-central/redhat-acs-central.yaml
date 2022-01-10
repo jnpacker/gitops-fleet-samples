@@ -69,7 +69,7 @@ spec:
                 metadata:
                   annotations:
                     apps.open-cluster-management.io/git-branch: main
-                    apps.open-cluster-management.io/git-path: 3.65.0/secured-cluster-services
+                    apps.open-cluster-management.io/git-path: 3.67.2/secured-cluster-services
                     apps.open-cluster-management.io/reconcile-option: merge
                   labels:
                     app: acs-securedcluster
