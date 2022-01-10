@@ -97,9 +97,9 @@ spec:
                             {{ fromSecret "init-bundle-ch" "sensor-tls" "ca.pem" | base64dec }}
                         image:
                           main:
-                            fullRef: registry.redhat.io/rh-acs/main@sha256:dc13e3ff268e45309dc6c674396094a3d8777111a612c0cb143049e44c6241f9   # you can set a full image reference such as stackrox.io/main:1.2.3.4 here, but this is not
+                            fullRef: registry.redhat.io/rh-acs/main@sha256:8db7630d094b661411ebb3f35248848d3147c735677d0922f7a04de9a41eacc9   # you can set a full image reference such as stackrox.io/main:1.2.3.4 here, but this is not
                           collector:
-                            fullRef: registry.redhat.io/rh-acs/collector@sha256:e5a9524efaf7adfb79341048ef2c4fa567e5efd64d208c15e5b26de1fd97e351
+                            fullRef: registry.redhat.io/rh-acs/collector@sha256:e4648723ccbd43fa5acf005d9734bfc06d41e19e1be0bde839880e28fa361e16
                         createSecrets: false
                         allowNonstandardReleaseName: true
 
